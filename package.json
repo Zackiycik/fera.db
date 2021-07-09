@@ -1,0 +1,27 @@
+{
+  "name": "fera.db",
+  "version": "1.0.0",
+  "description": "Hatasız küçük JSON temelli database modülü.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "database",
+    "discord.js",
+    "fera.db",
+    "json",
+    "jsondb",
+    "db",
+    "Zack"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Zackiycik/fera.db"
+  },
+  "author": "Zack",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
