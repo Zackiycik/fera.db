@@ -40,7 +40,7 @@ db.push("test.name", ["Fera","Zack", "Suzuya", "Vallens", "Ahmet"]) // Sıkışt
 db.pull("test.name", "Suzuya") // Çıkarır
 
 // Veri tabanın hepsini bir değere aktarma:
-const grimdb = db.all()
+const feradb = db.all()
 
 // Veri tabanın backupını almak:
 // Not: Dosya türünü yazmayınız sadece adını yazmanız yeterli.
