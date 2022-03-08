@@ -34,10 +34,15 @@ class FeraDatabase {
      */
     set(key, value) {
         if (!key || typeof key !== "string") {
-            throw new FeraError("Hatalı anahtar girildi!");
+            throw new ZackError("Hatalı anahtar girildi!");
+        }
+        if (value === 0) {
+            set(this.#file, key, value);
+            fs.writeFileSync(this.#fileName, JSON.stringify(this.#file, null, 2));
+            return this.get(key);
         }
         if (!value || value === undefined || value === null) {
-            throw new FeraError("Hatalı veri girildi!");
+            throw new ZackError("Hatalı veri girildi!");
         }
         set(this.#file, key, value);
         fs.writeFileSync(this.#fileName, JSON.stringify(this.#file, null, 2));
