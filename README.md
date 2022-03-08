@@ -9,6 +9,9 @@ npm install fera.db
 ## Dikkat
 Bu modül node.js 12 ve üzeri sürümlerde daha sağlıklı çalışır.
 
+## Güncelleme
+- set() fonksiyonunda ki glitch giderildi.
+
 # Kullanım
 ```js
 const db = require("fera.db");
