@@ -3,18 +3,18 @@ const FeraError = require("./Error.js");
 const { set, get, unset, has } = require("lodash");
 class FeraDatabase {
     /**
-     * @type {String}
+     * @type {string}
      * @private
      */
     #fileName;
     /**
-     * @type {Object}
+     * @type {object}
      * @private
      */
     #file = {};
 
     /**
-     * @param {String} dataFile
+     * @param {string} dataFile
      * @constructor 
      */
     constructor (dataFile = "database.json") {
@@ -29,12 +29,12 @@ class FeraDatabase {
     }
 
     /**
-     * @param {String} key 
+     * @param {string} key 
      * @param {v} value 
      */
     set(key, value) {
         if (!key || typeof key !== "string") {
-            throw new ZackError("Hatalı anahtar girildi!");
+            throw new FeraError("Hatalı anahtar girildi!");
         }
         if (value === 0) {
             set(this.#file, key, value);
@@ -42,7 +42,7 @@ class FeraDatabase {
             return this.get(key);
         }
         if (!value || value === undefined || value === null) {
-            throw new ZackError("Hatalı veri girildi!");
+            throw new FeraError("Hatalı veri girildi!");
         }
         set(this.#file, key, value);
         fs.writeFileSync(this.#fileName, JSON.stringify(this.#file, null, 2));
@@ -50,7 +50,7 @@ class FeraDatabase {
     }
 
     /**
-     * @param {String} key 
+     * @param {string} key 
      * @returns {any}
      */
     get(key) {
@@ -61,7 +61,7 @@ class FeraDatabase {
     }
 
     /**
-     * @param {String} key 
+     * @param {string} key 
      * @returns {any}
      */
     fetch(key) {
@@ -69,8 +69,8 @@ class FeraDatabase {
     }
 
     /**
-     * @param {String} key
-     * @returns {Boolean}
+     * @param {string} key
+     * @returns {boolean}
      */
     has(key) {
         if(!key || typeof key !== "string") {
@@ -80,8 +80,8 @@ class FeraDatabase {
     }
 
     /**
-     * @param {String} key
-     * @returns {Boolean} 
+     * @param {string} key
+     * @returns {boolean} 
      */
     delete(key) {
         if (!key || typeof key !== "string") {
@@ -97,11 +97,12 @@ class FeraDatabase {
     }
 
     /**
-     * @param {String} key 
-     * @param {Number} amount 
-     * @returns {Number}
+     * @param {string} key 
+     * @param {number} amount 
+     * @returns {number}
      */
     add(key, amount) {
+        amount = parseInt(amount)
         if (!key || typeof key !== "string") {
             throw new FeraError("Hatalı anahtar girildi!");
         }
@@ -117,11 +118,12 @@ class FeraDatabase {
     }
 
     /**
-     * @param {String} key 
-     * @param {Number} amount 
-     * @returns {Number}
+     * @param {string} key 
+     * @param {number} amount 
+     * @returns {number}
      */
     subtract(key, amount) {
+        amount = parseInt(amount)
         if (!key || typeof key !== "string") {
             throw new FeraError("Hatalı anahtar girildi!");
         }
@@ -137,7 +139,7 @@ class FeraDatabase {
     }
 
     /**
-     * @param {String} key 
+     * @param {string} key 
      * @param {any} value 
      */
     push(key, value) {
@@ -165,33 +167,40 @@ class FeraDatabase {
     }
 
     /**
-     * @param {String} key 
-     * @param {any} value 
+     * @param {string} key
+     * @param {any} value
+     * @param {any} id
      */
-    pull(key, value) {
+    pull(key, value, id) {
         if (!key || typeof key !== "string") {
             throw new FeraError("Hatalı anahtar girildi!");
         }
-        if (value !== 0 && !value && typeof value !== "boolean") {
-            throw new FeraError("Hatalı değer girildi!");
-        }
         const data = this.get(key);
+        if (!data) {
+            throw new FeraError("Girilen anahtar bulunamadı!")
+        }
         if (!Array.isArray(data)) {
             throw new FeraError("Girilen anahtar verisi array değil!");
         }
-        const newData = data.filter(x => !x.includes(value));
-        this.set(key, newData);
-        return this.get(key);
+        var index = data.map(dt => {
+            if(id) {
+                return dt[id]
+            } else {
+                return dt;
+            }
+        }).indexOf(value);
+        if (index !== -1) data.splice(index, 1);
+        return this.set(key,data);
     }
 
     /**
-     * @returns {Object}
+     * @returns {object}
      */
     all() {
         return this.#file;
     }
     /**
-     * @param {String} key 
+     * @param {string} key 
      * @returns {"string" | "number" | "bigint" | "boolean" | "symbol" | "array" | "undefined" | "object" | "function"}
      */
     type(key) {
@@ -207,7 +216,7 @@ class FeraDatabase {
     }
 
     /**
-     * @param {String} newFileName 
+     * @param {string} newFileName 
      */
     backup(newFileName) {
         if (!newFileName || typeof newFileName !== "string") {
@@ -218,7 +227,7 @@ class FeraDatabase {
     }
 
     /**
-     * @returns {Boolean}
+     * @returns {boolean}
      */
     deleteAll() {
         this.#file = {};
