@@ -10,7 +10,7 @@ npm install fera.db
 Bu modül node.js 12 ve üzeri sürümlerde daha sağlıklı çalışır.
 
 ## Güncelleme
-- set() fonksiyonundaki glitch giderildi.
+- push() fonksiyonu geliştirildi.
 
 # Kullanım
 ```js
